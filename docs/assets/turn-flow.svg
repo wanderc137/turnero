@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="flowTitle flowDesc">
+  <title id="flowTitle">Ciclo de vida de un turno en Turnero</title>
+  <desc id="flowDesc">Ocho pasos desde la seleccion de tramite en el kiosco hasta la actualizacion del display, y la maquina de estados esperando, llamado, en atencion y completado.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="topline" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="0.45" stop-color="#f59e0b"/>
+      <stop offset="0.75" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#34d399"/>
+    </linearGradient>
+    <marker id="flowArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="stateArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .title { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 28px; font-weight: 700; fill: #f8fafc; }
+      .subtitle { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #94a3b8; }
+      .card { fill: #111c2e; stroke: #243b5a; stroke-width: 1.5; }
+      .stepnum { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 20px; font-weight: 700; fill: #334e70; }
+      .card-title { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 16px; font-weight: 650; fill: #e2e8f0; }
+      .card-line { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 12px; fill: #94a3b8; }
+      .pill-kiosco { fill: #0e3a4a; stroke: #22d3ee; }
+      .pill-cola { fill: #3b2c0c; stroke: #f59e0b; }
+      .pill-ejecutivo { fill: #2a1d4d; stroke: #a78bfa; }
+      .pill-display { fill: #0d3a2e; stroke: #34d399; }
+      .pill-text { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; }
+      .panel { fill: #0d1728; stroke: #1e3554; stroke-width: 1.2; }
+      .panel-title { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: 650; fill: #cbd5e1; }
+      .action { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 10px; fill: #7dd3fc; }
+      .stamp { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 10.5px; fill: #64748b; }
+      .small { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 11.5px; fill: #94a3b8; }
+      .chip-esperando { fill: #f59e0b; fill-opacity: 0.12; stroke: #f59e0b; }
+      .chip-llamado { fill: #22d3ee; fill-opacity: 0.12; stroke: #22d3ee; }
+      .chip-atencion { fill: #a78bfa; fill-opacity: 0.12; stroke: #a78bfa; }
+      .chip-completado { fill: #34d399; fill-opacity: 0.12; stroke: #34d399; }
+      .state-text { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 13px; font-weight: 700; }
+      .legend { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #94a3b8; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="760" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="4" fill="url(#topline)"/>
+
+  <text class="title" x="60" y="58">Ciclo de vida de un turno</text>
+  <text class="subtitle" x="60" y="84">Del kiosco al display: ocho pasos, cuatro estados y ningun paso manual oculto.</text>
+
+  <!-- Fila 1 -->
+  <rect class="card" x="60" y="112" width="250" height="126" rx="14"/>
+  <text class="stepnum" x="80" y="146">01</text>
+  <rect class="pill-kiosco" x="246" y="128" width="50" height="20" rx="10"/>
+  <text class="pill-text" x="271" y="142" text-anchor="middle" fill="#67e8f9">KIOSCO</text>
+  <text class="card-title" x="80" y="182">Elegir tramite</text>
+  <text class="card-line" x="80" y="206">Toca una tarjeta A, B o C.</text>
+  <text class="card-line" x="80" y="224">Sin formularios largos.</text>
+
+  <rect class="card" x="340" y="112" width="250" height="126" rx="14"/>
+  <text class="stepnum" x="360" y="146">02</text>
+  <rect class="pill-kiosco" x="526" y="128" width="50" height="20" rx="10"/>
+  <text class="pill-text" x="551" y="142" text-anchor="middle" fill="#67e8f9">KIOSCO</text>
+  <text class="card-title" x="360" y="182">Ingresar RUT</text>
+  <text class="card-line" x="360" y="206">Se formatea y valida en vivo.</text>
+  <text class="card-line" x="360" y="224">Modulo 11 en cliente y servidor.</text>
+
+  <rect class="card" x="620" y="112" width="250" height="126" rx="14"/>
+  <text class="stepnum" x="640" y="146">03</text>
+  <rect class="pill-kiosco" x="806" y="128" width="50" height="20" rx="10"/>
+  <text class="pill-text" x="831" y="142" text-anchor="middle" fill="#67e8f9">KIOSCO</text>
+  <text class="card-title" x="640" y="182">Obtener ticket</text>
+  <text class="card-line" x="640" y="206">Codigo legible + QR unico.</text>
+  <text class="card-line" x="640" y="224">Token aleatorio de 128 bits.</text>
+
+  <rect class="card" x="900" y="112" width="250" height="126" rx="14"/>
+  <text class="stepnum" x="920" y="146">04</text>
+  <rect class="pill-cola" x="1086" y="128" width="50" height="20" rx="10"/>
+  <text class="pill-text" x="1111" y="142" text-anchor="middle" fill="#fbbf24">COLA</text>
+  <text class="card-title" x="920" y="182">Esperar en cola</text>
+  <text class="card-line" x="920" y="206">Orden FIFO global; codigos por tipo.</text>
+  <text class="card-line" x="920" y="224">Un turno activo por ejecutivo.</text>
+
+  <line x1="310" y1="175" x2="332" y2="175" stroke="#38bdf8" stroke-width="2" marker-end="url(#flowArrow)"/>
+  <line x1="590" y1="175" x2="612" y2="175" stroke="#38bdf8" stroke-width="2" marker-end="url(#flowArrow)"/>
+  <line x1="870" y1="175" x2="892" y2="175" stroke="#38bdf8" stroke-width="2" marker-end="url(#flowArrow)"/>
+
+  <!-- Fila 2 -->
+  <rect class="card" x="900" y="318" width="250" height="126" rx="14"/>
+  <text class="stepnum" x="920" y="352">05</text>
+  <rect class="pill-ejecutivo" x="1076" y="334" width="60" height="20" rx="10"/>
+  <text class="pill-text" x="1106" y="348" text-anchor="middle" fill="#c4b5fd">EJECUTIVO</text>
+  <text class="card-title" x="920" y="388">Llamar siguiente</text>
+  <text class="card-line" x="920" y="412">Toma el mas antiguo de la cola.</text>
+  <text class="card-line" x="920" y="430">Lo asigna a su modulo.</text>
+
+  <rect class="card" x="620" y="318" width="250" height="126" rx="14"/>
+  <text class="stepnum" x="640" y="352">06</text>
+  <rect class="pill-ejecutivo" x="796" y="334" width="60" height="20" rx="10"/>
+  <text class="pill-text" x="826" y="348" text-anchor="middle" fill="#c4b5fd">EJECUTIVO</text>
+  <text class="card-title" x="640" y="388">Escanear QR</text>
+  <text class="card-line" x="640" y="412">La camara lee el token del ticket.</text>
+  <text class="card-line" x="640" y="430">Solo el que llamo puede iniciar.</text>
+
+  <rect class="card" x="340" y="318" width="250" height="126" rx="14"/>
+  <text class="stepnum" x="360" y="352">07</text>
+  <rect class="pill-ejecutivo" x="516" y="334" width="60" height="20" rx="10"/>
+  <text class="pill-text" x="546" y="348" text-anchor="middle" fill="#c4b5fd">EJECUTIVO</text>
+  <text class="card-title" x="360" y="388">Atender y cerrar</text>
+  <text class="card-line" x="360" y="412">Registra tipo de atencion.</text>
+  <text class="card-line" x="360" y="430">Comentarios opcionales.</text>
+
+  <rect class="card" x="60" y="318" width="250" height="126" rx="14"/>
+  <text class="stepnum" x="80" y="352">08</text>
+  <rect class="pill-display" x="246" y="334" width="50" height="20" rx="10"/>
+  <text class="pill-text" x="271" y="348" text-anchor="middle" fill="#6ee7b7">DISPLAY</text>
+  <text class="card-title" x="80" y="388">Actualizar pantalla</text>
+  <text class="card-line" x="80" y="412">SSE empuja el nuevo estado.</text>
+  <text class="card-line" x="80" y="430">Sin recargar la pagina.</text>
+
+  <path d="M 1025 238 L 1025 288 L 1025 310" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#flowArrow)"/>
+  <line x1="900" y1="381" x2="878" y2="381" stroke="#38bdf8" stroke-width="2" marker-end="url(#flowArrow)"/>
+  <line x1="620" y1="381" x2="598" y2="381" stroke="#38bdf8" stroke-width="2" marker-end="url(#flowArrow)"/>
+  <line x1="340" y1="381" x2="318" y2="381" stroke="#38bdf8" stroke-width="2" marker-end="url(#flowArrow)"/>
+
+  <!-- Maquina de estados -->
+  <rect class="panel" x="60" y="490" width="1080" height="210" rx="16"/>
+  <text class="panel-title" x="84" y="522">Estados persistidos en la tabla turno</text>
+
+  <rect class="chip-esperando" x="80" y="552" width="200" height="58" rx="12"/>
+  <text class="state-text" x="180" y="586" text-anchor="middle" fill="#fbbf24">esperando</text>
+
+  <rect class="chip-llamado" x="340" y="552" width="200" height="58" rx="12"/>
+  <text class="state-text" x="440" y="586" text-anchor="middle" fill="#67e8f9">llamado</text>
+
+  <rect class="chip-atencion" x="600" y="552" width="200" height="58" rx="12"/>
+  <text class="state-text" x="700" y="586" text-anchor="middle" fill="#c4b5fd">en_atencion</text>
+
+  <rect class="chip-completado" x="860" y="552" width="200" height="58" rx="12"/>
+  <text class="state-text" x="960" y="586" text-anchor="middle" fill="#6ee7b7">completado</text>
+
+  <line x1="280" y1="581" x2="332" y2="581" stroke="#64748b" stroke-width="1.5" marker-end="url(#stateArrow)"/>
+  <line x1="540" y1="581" x2="592" y2="581" stroke="#64748b" stroke-width="1.5" marker-end="url(#stateArrow)"/>
+  <line x1="800" y1="581" x2="852" y2="581" stroke="#64748b" stroke-width="1.5" marker-end="url(#stateArrow)"/>
+
+  <text class="action" x="310" y="568" text-anchor="middle">solicitar</text>
+  <text class="action" x="570" y="568" text-anchor="middle">llamar</text>
+  <text class="action" x="830" y="568" text-anchor="middle">iniciar QR</text>
+
+  <text class="stamp" x="180" y="638" text-anchor="middle">fecha_creacion</text>
+  <text class="stamp" x="440" y="638" text-anchor="middle">fecha_llamado</text>
+  <text class="stamp" x="700" y="638" text-anchor="middle">fecha_inicio_atencion</text>
+  <text class="stamp" x="960" y="638" text-anchor="middle">fecha_completado</text>
+
+  <text class="small" x="84" y="674">Funciones: solicitar_turno() → llamar_siguiente() → iniciar_atencion() → finalizar_atencion().</text>
+  <text class="small" x="84" y="690">Esta version no implementa cancelacion, re-llamado ni prioridades.</text>
+
+  <!-- Leyenda -->
+  <circle cx="64" cy="735" r="5" fill="#22d3ee"/>
+  <text class="legend" x="76" y="739">Kiosco</text>
+  <circle cx="136" cy="735" r="5" fill="#f59e0b"/>
+  <text class="legend" x="148" y="739">Cola</text>
+  <circle cx="198" cy="735" r="5" fill="#a78bfa"/>
+  <text class="legend" x="210" y="739">Ejecutivo</text>
+  <circle cx="288" cy="735" r="5" fill="#34d399"/>
+  <text class="legend" x="300" y="739">Display</text>
+</svg>

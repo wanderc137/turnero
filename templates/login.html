@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Turnero - Acceso Ejecutivo{% endblock %}
+
+{% block content %}
+<div class="login-page">
+    <div class="login-card">
+        <div class="text-center mb-4">
+            <img src="{{ url_for('static', filename='img/logo.svg') }}"
+                 alt="Logo"
+                 style="height: 64px; margin-bottom: 0.5rem;">
+            <h2 class="fw-bold">Sistema Turnero</h2>
+            <p class="text-muted">Acceso Ejecutivo</p>
+        </div>
+
+        <form id="login-form" autocomplete="off">
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text"
+                       class="form-control form-control-lg"
+                       id="username"
+                       placeholder="Ingrese su usuario"
+                       required
+                       autofocus>
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password"
+                       class="form-control form-control-lg"
+                       id="password"
+                       placeholder="Ingrese su contraseña"
+                       required>
+            </div>
+
+            <div id="login-error" class="alert alert-danger d-none" role="alert"></div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100" id="login-btn">
+                Ingresar
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Login logic inline for simplicity (no redirects needed on error)
+    document.getElementById('login-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const errorEl = document.getElementById('login-error');
+        const btn = document.getElementById('login-btn');
+
+        errorEl.classList.add('d-none');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Ingresando...';
+
+        try {
+            const resp = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await resp.json();
+
+            if (!resp.ok) {
+                errorEl.textContent = data.error || 'Error al iniciar sesion';
+                errorEl.classList.remove('d-none');
+                btn.disabled = false;
+                btn.textContent = 'Ingresar';
+                return;
+            }
+
+            // Redirigir a consola ejecutivo
+            window.location.href = '/ejecutivo';
+        } catch (err) {
+            errorEl.textContent = 'Error de conexion. Intente nuevamente.';
+            errorEl.classList.remove('d-none');
+            btn.disabled = false;
+            btn.textContent = 'Ingresar';
+        }
+    });
+</script>
+{% endblock %}

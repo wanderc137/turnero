@@ -1,0 +1,24 @@
+PLAN.md
+AUDIT_REPORT.md
+__pycache__/
+*.pyc
+*.db
+.env
+
+# ── Higiene de publicación (portfolio) ──────────────────────────────
+PLAN.md
+AUDIT_REPORT.md
+*.log
+.env
+.env.*
+!.env.example
+!.env.sample
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Base de datos local de ejecución
+instance/
+*.db

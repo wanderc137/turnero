@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="archTitle archDesc">
+  <title id="archTitle">Arquitectura del sistema Turnero</title>
+  <desc id="archDesc">Diagrama de capas: tres clientes web se comunican por HTTP y SSE con una aplicacion Flask compuesta por blueprints, servicios y modelos; los modelos persisten en una base SQLite.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="topline" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset="0.5" stop-color="#818cf8"/>
+      <stop offset="1" stop-color="#34d399"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/>
+    </marker>
+    <marker id="arrowMuted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .title { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 28px; font-weight: 700; fill: #f8fafc; }
+      .subtitle { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #94a3b8; }
+      .panel { fill: #111c2e; stroke: #243b5a; stroke-width: 1.5; }
+      .panel-soft { fill: #0d1728; stroke: #1e3554; stroke-width: 1.2; }
+      .box-title { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 16px; font-weight: 650; fill: #e2e8f0; }
+      .box-sub { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 12.5px; fill: #94a3b8; }
+      .mono { font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace; font-size: 12px; fill: #7dd3fc; }
+      .small { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 11.5px; fill: #94a3b8; }
+      .tag-text { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 10.5px; font-weight: 700; fill: #06121f; letter-spacing: 0.06em; }
+      .arrow-label { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 11px; fill: #7dd3fc; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="4" fill="url(#topline)"/>
+
+  <text class="title" x="60" y="58">Arquitectura de Turnero</text>
+  <text class="subtitle" x="60" y="84">Tres interfaces, una aplicacion Flask y una base SQLite. Sin servicios externos obligatorios.</text>
+
+  <!-- Clientes -->
+  <rect class="panel" x="60" y="116" width="320" height="104" rx="14"/>
+  <rect x="86" y="132" width="104" height="22" rx="11" fill="#065f46"/>
+  <text class="tag-text" x="138" y="147" text-anchor="middle">SSE</text>
+  <text class="box-title" x="86" y="180">Display publico</text>
+  <text class="box-sub" x="86" y="200">Pantalla de sala · GET / · sin login</text>
+
+  <rect class="panel" x="440" y="116" width="320" height="104" rx="14"/>
+  <rect x="466" y="132" width="104" height="22" rx="11" fill="#0e7490"/>
+  <text class="tag-text" x="518" y="147" text-anchor="middle">HTTP</text>
+  <text class="box-title" x="466" y="180">Kiosco de autoatencion</text>
+  <text class="box-sub" x="466" y="200">Tablet o PC · GET /kiosco · ticket QR</text>
+
+  <rect class="panel" x="820" y="116" width="320" height="104" rx="14"/>
+  <rect x="846" y="132" width="104" height="22" rx="11" fill="#6d28d9"/>
+  <text class="tag-text" x="898" y="147" text-anchor="middle">HTTP</text>
+  <text class="box-title" x="846" y="180">Consola de ejecutivo</text>
+  <text class="box-sub" x="846" y="200">PC con camara · GET /ejecutivo</text>
+
+  <!-- Flechas clientes -> app -->
+  <line x1="220" y1="220" x2="220" y2="278" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text class="arrow-label" x="230" y="254" fill="#34d399">EventSource</text>
+  <line x1="600" y1="220" x2="600" y2="278" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="610" y="254">fetch / JSON</text>
+  <line x1="980" y1="220" x2="980" y2="278" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="990" y="254">fetch / JSON</text>
+
+  <!-- App -->
+  <rect class="panel" x="60" y="286" width="1080" height="258" rx="16"/>
+  <text class="box-title" x="84" y="322">Aplicacion Flask (un solo proceso)</text>
+  <rect x="944" y="303" width="170" height="26" rx="13" fill="#152a45" stroke="#2b4a70"/>
+  <text class="small" x="1029" y="320" text-anchor="middle" fill="#93c5fd">app.py · create_app()</text>
+
+  <rect class="panel-soft" x="84" y="344" width="310" height="170" rx="12"/>
+  <text class="box-title" x="104" y="372" font-size="14">Blueprints · routes/</text>
+  <text class="mono" x="104" y="400">display.py   /</text>
+  <text class="mono" x="104" y="422">kiosco.py    /kiosco</text>
+  <text class="mono" x="104" y="444">executive.py /ejecutivo · /login</text>
+  <text class="mono" x="104" y="466">api.py       /api/* · 12 endpoints</text>
+  <text class="small" x="104" y="494">Valida JSON, sesion y cabeceras CSRF.</text>
+
+  <rect class="panel-soft" x="425" y="344" width="310" height="170" rx="12"/>
+  <text class="box-title" x="445" y="372" font-size="14">Servicios · services/</text>
+  <text class="mono" x="445" y="400">auth_service</text>
+  <text class="small" x="445" y="419">bcrypt · sesion · decoradores</text>
+  <text class="mono" x="445" y="444">turno_service</text>
+  <text class="small" x="445" y="463">RUT modulo 11 · cola FIFO</text>
+  <text class="small" x="445" y="482">transiciones de estado</text>
+  <text class="small" x="445" y="501">get_cola() · get_estado_display()</text>
+
+  <rect class="panel-soft" x="766" y="344" width="350" height="170" rx="12"/>
+  <text class="box-title" x="786" y="372" font-size="14">Modelos y bus SSE</text>
+  <text class="mono" x="786" y="400">Modulo · Ejecutivo</text>
+  <text class="mono" x="786" y="422">TipoTramite · Turno</text>
+  <text class="small" x="786" y="446">db = SQLAlchemy() · to_dict()</text>
+  <text class="mono" x="786" y="470">_event_listeners: Queue × N</text>
+  <text class="small" x="786" y="489">Registro en memoria · maxsize 100</text>
+  <text class="small" x="786" y="508">broadcast_event() → text/event-stream</text>
+
+  <line x1="394" y1="429" x2="417" y2="429" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="735" y1="429" x2="758" y2="429" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Base de datos -->
+  <line x1="600" y1="544" x2="600" y2="576" stroke="#64748b" stroke-width="2" marker-end="url(#arrowMuted)"/>
+  <text class="arrow-label" x="612" y="568" fill="#94a3b8">SQLAlchemy ORM</text>
+  <rect class="panel" x="330" y="584" width="540" height="86" rx="14"/>
+  <text class="box-title" x="600" y="616" text-anchor="middle">SQLite · instance/turnero.db</text>
+  <text class="box-sub" x="600" y="640" text-anchor="middle">4 tablas · indice en turno.estado · migracion manual de logged_in</text>
+  <text class="small" x="600" y="658" text-anchor="middle">Archivo local; no se versiona en el repositorio.</text>
+
+  <text class="small" x="60" y="700">Bootstrap 5.3 se carga por CDN; qrcodejs y html5-qrcode se sirven localmente desde static/js.</text>
+  <text class="small" x="60" y="716">El bus SSE vive en memoria del proceso: no comparte eventos entre varios workers.</text>
+</svg>

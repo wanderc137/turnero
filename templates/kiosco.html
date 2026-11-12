@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block title %}Turnero - Kiosco{% endblock %}
+
+{% block content %}
+<div class="kiosco-container">
+    <!-- Header -->
+    <header class="kiosco-header text-center py-3">
+        <div class="container">
+            <h2 class="fw-bold mb-0">
+                <img src="{{ url_for('static', filename='img/logo.svg') }}"
+                     alt="Logo"
+                     style="height: 36px; vertical-align: middle; margin-right: 8px;">
+                Sistema de Turnos
+            </h2>
+            <p class="text-muted mb-0">Seleccione el tramite que desea realizar</p>
+        </div>
+    </header>
+
+    <div class="container mt-4">
+        <!-- PASO 1: Seleccion de Tramite -->
+        <div id="paso-1">
+            <div class="row g-4 justify-content-center" id="tramites-container">
+                <!-- Las tarjetas se generan dinámicamente via JavaScript -->
+            </div>
+        </div>
+
+        <!-- PASO 2: Ingreso de RUT -->
+        <div id="paso-2" class="d-none">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <button class="btn btn-outline-secondary btn-sm mb-3" id="btn-volver-paso1">
+                                &larr; Volver
+                            </button>
+                            <h4 class="fw-bold mb-1">Ingrese su RUT</h4>
+                            <p class="text-muted mb-4">
+                                Tramite seleccionado: <strong id="tramite-seleccionado-nombre">--</strong>
+                            </p>
+
+                            <div class="mb-3">
+                                <label for="rut-input" class="form-label">RUT</label>
+                                <input type="text"
+                                       class="form-control form-control-lg"
+                                       id="rut-input"
+                                       placeholder="12.345.678-9"
+                                       maxlength="12"
+                                       autocomplete="off">
+                                <div class="form-text">Formato: 12.345.678-9 (con digito verificador)</div>
+                                <div id="rut-error" class="text-danger small mt-1 d-none"></div>
+                            </div>
+
+                            <button class="btn btn-success btn-lg w-100" id="btn-solicitar-turno">
+                                Solicitar Turno
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PASO 3: Ticket Generado -->
+        <div id="paso-3" class="d-none">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="card text-center">
+                        <div class="card-body p-5">
+                            <div class="mb-4">
+                                <span class="badge bg-success fs-6 mb-2">Turno Generado</span>
+                                <div class="display-1 fw-bold text-primary my-3" id="ticket-codigo">--</div>
+                                <p class="text-muted">
+                                    Tramite: <strong id="ticket-tramite">--</strong>
+                                </p>
+                            </div>
+
+                            <div class="mb-4">
+                                <div id="qrcode-container" class="d-inline-block p-3 bg-white rounded shadow-sm">
+                                    <div id="qrcode"></div>
+                                </div>
+                            </div>
+
+                            <p class="lead fw-semibold">
+                                Presente este codigo QR al ejecutivo cuando lo llamen
+                            </p>
+
+                            <button class="btn btn-primary btn-lg mt-3" id="btn-nuevo-turno">
+                                Nuevo Turno
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/qrcode.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/kiosco.js') }}"></script>
+{% endblock %}

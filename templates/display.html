@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Turnero - Display{% endblock %}
+
+{% block content %}
+<div class="display-container">
+    <!-- Header -->
+    <header class="display-header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col text-center">
+                    <h1 class="display-4 fw-bold mb-0">
+                        <img src="{{ url_for('static', filename='img/logo.svg') }}"
+                             alt="Logo"
+                             class="me-2"
+                             style="height: 48px; vertical-align: middle;">
+                        Sistema de Turnos
+                    </h1>
+                    <p class="lead text-light-emphasis mb-0 mt-1">
+                        Sucursal Central
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container-fluid mt-4">
+        <!-- Cola de Espera -->
+        <div id="cola-section" class="d-none">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card bg-dark border-secondary">
+                        <div class="card-header bg-dark border-secondary">
+                            <h4 class="mb-0">Turnos en Espera</h4>
+                        </div>
+                        <div class="card-body" id="cola-body">
+                            <!-- Se renderiza via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid de Modulos -->
+        <div class="row" id="modulos-grid">
+            <!-- Los modulos se renderizan via JavaScript -->
+        </div>
+    </main>
+
+    <!-- Sin turnos (overlay) -->
+    <div id="no-turnos-overlay" class="no-turnos-overlay d-none">
+        <div class="no-turnos-content">
+            <div class="display-1 mb-3">Sin turnos en espera</div>
+            <p class="lead">Esperando nuevos clientes...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/display.js') }}"></script>
+{% endblock %}

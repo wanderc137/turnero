@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="sseTitle sseDesc">
+  <title id="sseTitle">Sistema de eventos en tiempo real por SSE</title>
+  <desc id="sseDesc">El navegador abre EventSource contra el endpoint SSE; el registro de listeners en memoria recibe los eventos que publican las rutas de la API mediante broadcast_event.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="topline" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/>
+    </marker>
+    <marker id="arrowViolet" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#a78bfa"/>
+    </marker>
+    <style>
+      .title { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 28px; font-weight: 700; fill: #f8fafc; }
+      .subtitle { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 14px; fill: #94a3b8; }
+      .panel { fill: #111c2e; stroke: #243b5a; stroke-width: 1.5; }
+      .panel-soft { fill: #0d1728; stroke: #1e3554; stroke-width: 1.2; }
+      .box-title { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 15px; font-weight: 650; fill: #e2e8f0; }
+      .mono { font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace; font-size: 11.5px; fill: #7dd3fc; }
+      .small { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 11.5px; fill: #94a3b8; }
+      .tiny { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 10.5px; fill: #64748b; }
+      .queue { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 11px; fill: #c4b5fd; }
+      .event { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 11px; }
+      .label { font-family: Inter, 'Segoe UI', Arial, sans-serif; font-size: 10.5px; fill: #94a3b8; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <rect x="0" y="0" width="1200" height="4" fill="url(#topline)"/>
+
+  <text class="title" x="60" y="58">Eventos en tiempo real con SSE</text>
+  <text class="subtitle" x="60" y="84">Server-Sent Events: una conexion HTTP larga por pantalla, sin WebSocket ni broker externo.</text>
+
+  <!-- Cliente -->
+  <rect class="panel" x="50" y="130" width="280" height="150" rx="14"/>
+  <text class="box-title" x="70" y="162">Navegador · display.js</text>
+  <text class="mono" x="70" y="190">new EventSource(</text>
+  <text class="mono" x="82" y="208">'/api/turnos/eventos')</text>
+  <text class="small" x="70" y="234">onmessage → JSON.parse + render</text>
+  <text class="small" x="70" y="254">onerror → reconectar en 3 s</text>
+
+  <line x1="330" y1="205" x2="360" y2="205" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text class="label" x="345" y="194" text-anchor="middle" fill="#6ee7b7">HTTP</text>
+
+  <!-- Proceso Flask -->
+  <rect class="panel" x="365" y="96" width="510" height="430" rx="16"/>
+  <text class="box-title" x="389" y="128">Proceso Flask (uno solo)</text>
+  <rect x="760" y="108" width="92" height="24" rx="12" fill="#152a45" stroke="#2b4a70"/>
+  <text class="tiny" x="806" y="124" text-anchor="middle" fill="#93c5fd">app.py</text>
+
+  <rect class="panel-soft" x="390" y="145" width="460" height="92" rx="12"/>
+  <text class="box-title" x="410" y="172" font-size="13.5">GET /api/turnos/eventos</text>
+  <text class="mono" x="410" y="196">Content-Type: text/event-stream</text>
+  <text class="mono" x="410" y="216">Cache-Control: no-cache · Connection: keep-alive</text>
+  <text class="mono" x="410" y="232">X-Accel-Buffering: no (para Nginx)</text>
+
+  <line x1="620" y1="237" x2="620" y2="264" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowCyan)"/>
+  <text class="label" x="632" y="256">register_listener()</text>
+
+  <rect class="panel-soft" x="390" y="272" width="460" height="150" rx="12"/>
+  <text class="box-title" x="410" y="299" font-size="13.5">Registro de listeners (memoria)</text>
+  <text class="mono" x="410" y="321">_event_listeners: list[Queue]</text>
+  <rect x="410" y="336" width="126" height="34" rx="8" fill="#1e1b4b" stroke="#6d28d9"/>
+  <text class="queue" x="473" y="357" text-anchor="middle">q1 · maxsize 100</text>
+  <rect x="552" y="336" width="126" height="34" rx="8" fill="#1e1b4b" stroke="#6d28d9"/>
+  <text class="queue" x="615" y="357" text-anchor="middle">q2 · maxsize 100</text>
+  <rect x="694" y="336" width="136" height="34" rx="8" fill="#1e1b4b" stroke="#6d28d9"/>
+  <text class="queue" x="762" y="357" text-anchor="middle">qN · maxsize 100</text>
+  <text class="small" x="410" y="394">Cada pestaña o pantalla conectada posee su propia cola.</text>
+  <text class="small" x="410" y="412">unregister_listener() se ejecuta en el bloque finally.</text>
+
+  <line x1="390" y1="205" x2="362" y2="205" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text class="label" x="376" y="194" text-anchor="middle" fill="#6ee7b7">data</text>
+
+  <!-- Productores -->
+  <rect class="panel" x="930" y="130" width="220" height="300" rx="14"/>
+  <text class="box-title" x="950" y="162">Productores</text>
+  <text class="small" x="950" y="188">Cada mutacion de estado llama</text>
+  <text class="mono" x="950" y="208">broadcast_event()</text>
+  <line x1="950" y1="224" x2="1130" y2="224" stroke="#243b5a" stroke-width="1"/>
+  <text class="mono" x="950" y="248">solicitar</text>
+  <text class="mono" x="950" y="272">siguiente</text>
+  <text class="mono" x="950" y="296">iniciar-atencion</text>
+  <text class="mono" x="950" y="320">finalizar-atencion</text>
+  <text class="mono" x="950" y="344">logout</text>
+  <text class="small" x="950" y="378">payload:</text>
+  <text class="mono" x="950" y="396">{ type, data }</text>
+  <text class="tiny" x="950" y="416">json.dumps · put_nowait</text>
+
+  <line x1="930" y1="300" x2="882" y2="300" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrowViolet)"/>
+  <text class="label" x="906" y="289" text-anchor="middle" fill="#c4b5fd">push</text>
+
+  <!-- Eventos -->
+  <text class="small" x="60" y="558">Tipos de evento emitidos</text>
+  <rect x="60" y="570" width="150" height="30" rx="15" fill="#0d3a2e" stroke="#34d399"/>
+  <text class="event" x="135" y="590" text-anchor="middle" fill="#6ee7b7">turno_creado</text>
+  <rect x="222" y="570" width="150" height="30" rx="15" fill="#0e3a4a" stroke="#22d3ee"/>
+  <text class="event" x="297" y="590" text-anchor="middle" fill="#67e8f9">turno_llamado</text>
+  <rect x="384" y="570" width="158" height="30" rx="15" fill="#2a1d4d" stroke="#a78bfa"/>
+  <text class="event" x="463" y="590" text-anchor="middle" fill="#c4b5fd">turno_atendido</text>
+  <rect x="554" y="570" width="170" height="30" rx="15" fill="#2a1d4d" stroke="#a78bfa"/>
+  <text class="event" x="639" y="590" text-anchor="middle" fill="#c4b5fd">turno_finalizado</text>
+  <rect x="736" y="570" width="172" height="30" rx="15" fill="#3b2c0c" stroke="#f59e0b"/>
+  <text class="event" x="822" y="590" text-anchor="middle" fill="#fbbf24">ejecutivo_logout</text>
+
+  <!-- Heartbeat -->
+  <rect class="panel-soft" x="930" y="540" width="220" height="110" rx="12"/>
+  <text class="box-title" x="950" y="566" font-size="13">Latido y reconexion</text>
+  <text class="mono" x="950" y="590">: heartbeat</text>
+  <text class="small" x="950" y="610">cada 30 s si no hay eventos</text>
+  <text class="mono" x="950" y="634">reintento 3000 ms (JS)</text>
+
+  <text class="small" x="60" y="650">El cliente recibe un bloque "data: {json}" por evento. El navegador mantiene la conexion abierta y reintenta solo.</text>
+  <text class="small" x="60" y="674">El bus es local al proceso: con varios workers de Gunicorn cada uno tendria sus propios listeners y eventos distintos.</text>
+  <text class="small" x="60" y="698">Si una cola se llena, broadcast_event la descarta para no bloquear al resto de las pantallas.</text>
+</svg>

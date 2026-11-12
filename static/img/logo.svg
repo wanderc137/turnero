@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60">
+  <rect width="200" height="60" rx="8" fill="#1565C0"/>
+  <text x="20" y="38" font-family="Arial, sans-serif" font-weight="bold" font-size="20" fill="white">TURNERO</text>
+  <circle cx="170" cy="30" r="14" fill="none" stroke="white" stroke-width="2.5"/>
+  <text x="170" y="35" font-family="Arial, sans-serif" font-weight="bold" font-size="16" fill="white" text-anchor="middle">T</text>
+</svg>

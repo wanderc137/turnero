@@ -864,6 +864,57 @@ Lecciones: el estado persistido (`logged_in`) necesita expiración; los datos p�
 
 ---
 
+## Ficha de evaluación
+
+**Madurez global: 4.3/5**
+
+| Criterio | Nota | Evidencia |
+|---|---:|---|
+| Madurez | 4/5 | Flujo completo kiosco → cola → ejecutivo → display, versión 1.0.0, 9 hallazgos de auditoría corregidos y seed idempotente con 3 ejecutivos y 3 trámites. |
+| Reproducibilidad | 4/5 | Flask 3.1 y SQLite con requirements.txt, instalación en dos comandos; sin tests automatizados ni migraciones formales más allá del ALTER de logged_in. |
+| Documentación | 5/5 | README de 45 KB, datasheet de 48 KB, developer de 68 KB, bitácora con 12 problemas, referencias, diagramas SVG y manual del operador en PDF. |
+| Honestidad de límites | 5/5 | Diez limitaciones numeradas y tabla de deuda asumida con el momento en que debería pagarse; advierte que no hubo benchmarks formales. |
+| Valor demostrativo | 4/5 | Máquina de estados con transiciones controladas, QR de 128 bits como testigo de posesión y SSE con reconexión a los 3 s sobre una única fuente de verdad. |
+| Facilidad de despliegue | 4/5 | python app.py escucha en 0.0.0.0 y la base se crea sola; el escáner QR exige HTTPS o localhost, y Bootstrap por CDN requiere internet para el estilo. |
+
+Sirve como referencia completa de un sistema de turnos para una sucursal y para estudiar seguridad y estados en una app pequeña. La limitación que más pesa es el bus SSE en memoria y la carrera lógica en "llamar siguiente".
+
+## Lo que no funcionó
+
+### v1.0 · API pública — El qr_token viajaba al display
+
+El endpoint /api/turnos/display reutilizaba to_dict() e incluía el token que permite iniciar la atención. Se creó to_display_dict() para las respuestas públicas; los eventos SSE siguen emitiendo el turno completo y la fuga quedó documentada.
+
+### v1.0 · validación — RUT validado solo en el navegador
+
+Un curl con RUT inválido creaba el turno porque la validación vivía en kiosco.js. validar_rut() con módulo 11 se movió a turno_service y la API responde 400; el cliente conserva la comprobación solo como feedback.
+
+### v1.0 · numeración — Códigos de turno que colisionan
+
+codigo = prefijo + (COUNT(tipo) + 1) retrocede al borrar turnos y la restricción unique rechaza el nuevo código. Se documentó como limitación y se recomendó reiniciar la base; falta una secuencia persistente por tipo.
+
+### v1.0 · presencia — Módulos fantasma en el display
+
+logged_in es un booleano persistido que solo se limpia con logout explícito, así que cerrar la pestaña dejaba el módulo visible. Se documentó el cierre de sesión y se agregó el evento ejecutivo_logout, sin TTL ni heartbeat.
+
+## Preguntas típicas
+
+**¿Qué es Turnero?**
+
+Una aplicación Flask con SQLite que gestiona turnos en una sucursal: kiosco para que el cliente se asigne un número, consola para el ejecutivo y display público actualizado por SSE.
+
+**¿Soporta varias sucursales o administración web?**
+
+No. Hay una sola instancia y una sola cola; trámites, módulos y ejecutivos se gestionan por seed o SQL, sin panel de administración ni cancelación de turnos.
+
+**¿Cómo se ejecuta?**
+
+Se crea un venv, se instala requirements.txt y se lanza python app.py, que escucha en 0.0.0.0:5000 y siembra la base si está vacía; el QR requiere HTTPS o localhost.
+
+**¿Qué se puede reutilizar?**
+
+La máquina de estados con servicios separados de las rutas, la validación de RUT en servidor y el patrón de serialización distinto para público y autenticado.
+
 ## Licencia
 
 Distribuido bajo la licencia **MIT**. Consulta [LICENSE](LICENSE).

@@ -291,7 +291,8 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.08);pa
 @media(max-width:760px){.concept-grid,.fail-grid{grid-template-columns:1fr}.concept-side{border-left:0;padding-left:0}}
 
 </style>
-<link href="assets/community.css?v=5" rel="stylesheet"/></head>
+<link href="assets/community.css?v=5" rel="stylesheet"/><link href="rec/player.css?v=1" rel="stylesheet"/>
+</head>
 <body style="--accent:#2E7DFF;--accent2:#22D3EE">
 <div class="grid-overlay"></div>
 <div class="glow one"></div>
@@ -306,6 +307,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.08);pa
 <a href="#problema">Visión</a>
 <a href="#como">Cómo funciona</a>
 <a href="#arquitectura">Arquitectura</a>
+<a href="#video">Video</a>
 <a href="#docs">Documentación</a>
 <a href="#comunidad">Comunidad</a>
 <a class="btn btn-ghost" href="https://github.com/wanderc137/turnero" rel="noopener" style="padding:9px 15px" target="_blank">GitHub</a>
@@ -356,6 +358,45 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.08);pa
 <div class="timeline reveal"><div class="step"><div class="step-num">01</div><div class="step-body"><h3>El usuario se identifica</h3><p>El kiosco valida el RUT chileno y genera un turno con QR.</p></div></div><div class="step"><div class="step-num">02</div><div class="step-body"><h3>El turno entra a la cola</h3><p>SQLite registra el turno y su estado; la cola se ordena por prioridad y llegada.</p></div></div><div class="step"><div class="step-num">03</div><div class="step-body"><h3>El ejecutivo llama</h3><p>Desde su consola selecciona el siguiente turno y lo marca como atendido.</p></div></div><div class="step"><div class="step-num">04</div><div class="step-body"><h3>El display se actualiza</h3><p>SSE empuja el nuevo llamado a la pantalla de la sala sin polling.</p></div></div></div>
 </div>
 </section>
+
+<section class="section tight rec-section" id="video" style="--accent:#2E7DFF;--accent2:#14F195">
+<div class="wrap">
+<div class="rec-kicker">REC · VIDEO · 2:39</div>
+<h2 class="rec-h2">Turnero · del kiosco al display</h2>
+<p class="rec-lead">Recorrido por los segmentos que sostienen Turnero: modelo de datos, validación de RUT, solicitud de turno, cola FIFO, QR como testigo, autenticación y display en tiempo real por SSE.</p>
+<div class="rec-banner">
+<span class="rec-banner-icon">📋</span>
+<strong>Puedes copiar y pegar los comandos del video desde el video !!!</strong>
+<span>Pausá, seleccioná el texto de la terminal y copiá.</span>
+</div>
+<div class="rec-shell">
+<div class="rec-bar"><i></i><i></i><i></i><span class="rec-title">Turnero · del kiosco al display · asciinema</span><span class="rec-rec"><b></b>REC</span></div>
+<div class="rec-screen-wrap">
+<div class="rec-screen" id="rec-screen"></div>
+<div class="rec-poster" id="rec-poster">
+<div class="rec-kicker">ASCIINEMA · 2:39</div>
+<h3>Turnero · del kiosco al display</h3>
+<p>Recorrido por los segmentos que sostienen Turnero: modelo de datos, validación de RUT, solicitud de turno, cola FIFO, QR como testigo, autenticación y display en tiempo real por SSE.</p>
+<div class="rec-poster-meta">turnero · código real</div>
+<button class="rec-btn rec-primary" id="rec-start" type="button">▶ Reproducir</button>
+</div>
+</div>
+<div class="rec-controls">
+<button class="rec-btn rec-primary" id="rec-play" type="button">▶ Reproducir</button>
+<button class="rec-btn" id="rec-restart" type="button">↺ Reiniciar</button>
+<input class="rec-progress" id="rec-range" type="range" min="0" max="1000" value="0" aria-label="Progreso"/>
+<span class="rec-time" id="rec-time">0:00 / 2:39</span>
+<select class="rec-speed" id="rec-speed" aria-label="Velocidad"><option value="1">1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select>
+<button class="rec-btn" id="rec-full" type="button" title="Pantalla completa">⛶</button>
+<button class="rec-btn" id="rec-copy" type="button">⧉ Copiar comandos</button>
+<a class="rec-download" href="rec/turnero.cast" download>descargar .cast</a>
+</div>
+</div>
+<p class="rec-note">Video generado a partir del código real del repositorio. Los fragmentos corresponden a los archivos y líneas indicados; no se muestran credenciales ni datos de producción.</p>
+<div class="rec-chapters"><span class="rec-chip"><b>0:06</b> EL PROBLEMA</span><span class="rec-chip"><b>0:19</b> ARQUITECTURA</span><span class="rec-chip"><b>0:32</b> MODELO DE DATOS</span><span class="rec-chip"><b>0:47</b> VALIDAR RUT</span><span class="rec-chip"><b>1:02</b> CREAR EL TICKET</span><span class="rec-chip"><b>1:15</b> COLA FIFO</span><span class="rec-chip"><b>1:31</b> QR COMO TESTIGO</span><span class="rec-chip"><b>1:47</b> SSE EN VIVO</span><span class="rec-chip"><b>2:04</b> SEGURIDAD</span><span class="rec-chip"><b>2:18</b> CÓMO EJECUTARLO</span></div>
+</div>
+</section>
+
 <section class="section tight" id="arquitectura">
 <div class="wrap">
 <div class="section-head reveal">
@@ -468,5 +509,7 @@ footer{position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.08);pa
 </script>
 <script>window.PORTFOLIO_COMMUNITY = {"account": "wanderc137", "repo": "turnero", "coinNamespace": "wanderc137-turnero-coins-v1", "faqs": [{"q": "¿Qué vistas incluye?", "a": "Kiosco, consola de ejecutivo y display público."}, {"q": "¿Qué stack usa?", "a": "Flask + SQLite + SSE + bcrypt; QR y validación de RUT chileno."}, {"q": "¿Cómo actualiza el display?", "a": "Con <b>Server-Sent Events</b>; no hay polling."}, {"q": "¿Tiene panel de administración?", "a": "No completo; el README declara esa deuda y el debug/SECRET_KEY de desarrollo."}, {"q": "¿Cuáles son los límites?", "a": "SSE en memoria, sin tests automatizados y sin admin completo."}]};</script>
 <script defer="" src="assets/community.js?v=6"></script>
+<script defer src="rec/turnero.cast.js?v=1"></script>
+<script defer src="rec/player.js?v=1"></script>
 </body>
 </html>

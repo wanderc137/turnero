@@ -1,5 +1,19 @@
 /* Reproductor asciinema inline reutilizable para las páginas de wanderc137. */
 .rec-section{position:relative;z-index:1}
+.rec-section .rec-kicker{
+  font-family:'JetBrains Mono',ui-monospace,monospace;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent,#2E7DFF);margin:0 0 10px;
+}
+.rec-section .rec-h2{
+  font-family:'Space Grotesk','Inter',sans-serif;
+  font-size:clamp(28px,4.6vw,50px);line-height:1.06;letter-spacing:-.035em;
+  color:#f2f6fc;margin:0 0 12px;max-width:22ch;
+}
+.rec-section .rec-lead{
+  font-size:clamp(14px,1.5vw,17px);line-height:1.65;
+  color:#9fb0c4;margin:0 0 22px;max-width:72ch;
+}
 .rec-banner{
   display:flex;align-items:center;gap:12px;flex-wrap:wrap;
   padding:14px 18px;margin:0 0 18px;
